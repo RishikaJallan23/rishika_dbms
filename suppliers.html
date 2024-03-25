@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suppliers</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+  <div class="navbar">
+    <a href="/">Home</a>
+    <a href="/customers">Customers</a>
+    <a href="/orders">Orders</a>
+    <a href="/products">Products</a>
+    <a href="/employees">Employees</a>
+    <a href="/stocks">Stocks</a>
+    <a href="/suppliers">Suppliers</a>
+  </div>
+  <h1>Suppliers</h1>
+  <table border="1">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Contact Information</th>
+      <th>Actions</th>
+    </tr>
+    {% for supplier in suppliers %}
+    <tr>
+      <td>{{ supplier.id }}</td>
+      <td>{{ supplier.name }}</td>
+      <td>{{ supplier.contact_info }}</td>
+      <td>
+        <form method="POST" action="{{ url_for('modify_supplier', id=supplier.id) }}">
+          <input type="hidden" name="id" value="{{ supplier.id }}" />
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" value="{{ supplier.name }}" required />
+          <label for="contact_info">Contact Information:</label>
+          <input type="text" id="contact_info" name="contact_info" value="{{ supplier.contact_info }}" required />
+          <button type="submit">Modify</button>
+        </form>
+        <form method="POST" action="{{ url_for('delete_supplier', id=supplier.id) }}">
+          <button type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <h2>Add Supplier</h2>
+  <form class="ajax-form" id="supplier-form" action="/add_supplier" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required />
+    <label for="contact_info">Contact Information:</label>
+    <input type="text" id="contact_info" name="contact_info" required />
+    <button type="submit">Add Supplier</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orders</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+  <div class="navbar">
+    <a href="/">Home</a>
+    <a href="/customers">Customers</a>
+    <a href="/orders">Orders</a>
+    <a href="/products">Products</a>
+    <a href="/employees">Employees</a>
+    <a href="/stocks">Stocks</a>
+    <a href="/suppliers">Suppliers</a>
+  </div>
+  <h1>Orders</h1>
+  <table border="1">
+    <tr>
+      <th>Customer ID</th>
+      <th>Product ID</th>
+      <th>Quantity</th>
+      <th>Order Date</th>
+      <th>Actions</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+      <td>{{ order.customer_id }}</td>
+      <td>{{ order.product_id }}</td>
+      <td>{{ order.quantity }}</td>
+      <td>{{ order.order_date }}</td>
+      <td>
+        <form method="POST" action="{{ url_for('modify_order', id=order.id) }}">
+          <input type="hidden" name="id" value="{{ order.id }}" />
+          <label for="customer_id">Customer ID:</label>
+          <input type="number" id="customer_id" name="customer_id" value="{{ order.customer_id }}" required />
+          <label for="product_id">Product ID:</label>
+          <input type="number" id="product_id" name="product_id" value="{{ order.product_id }}" required />
+          <label for="quantity">Quantity:</label>
+          <input type="number" id="quantity" name="quantity" value="{{ order.quantity }}" required />
+          <label for="order_date">Order Date:</label>
+          <input type="date" id="order_date" name="order_date" value="{{ order.order_date }}" required />
+          <button type="submit">Modify</button>
+        </form>
+        <form method="POST" action="{{ url_for('delete_order', id=order.id) }}">
+          <button type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <h2>Add Order</h2>
+  <form class="ajax-form" id="order-form" action="/add_order" method="post">
+    <label for="customer_id">Customer ID:</label>
+    <input type="number" id="customer_id" name="customer_id" required />
+    <label for="product_id">Product ID:</label>
+    <input type="number" id="product_id" name="product_id" required />
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" name="quantity" required />
+    <label for="order_date">Order Date:</label>
+    <input type="date" id="order_date" name="order_date" required />
+    <button type="submit">Add Order</button>
+  </form>
+</body>
+</html>

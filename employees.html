@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employees</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+  <div class="navbar">
+    <a href="/">Home</a>
+    <a href="/customers">Customers</a>
+    <a href="/orders">Orders</a>
+    <a href="/products">Products</a>
+    <a href="/employees">Employees</a>
+    <a href="/stocks">Stocks</a>
+    <a href="/suppliers">Suppliers</a>
+  </div>
+  <h1>Employees</h1>
+  <table border="1">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Position</th>
+      <th>Actions</th>
+    </tr>
+    {% for employee in employees %}
+    <tr>
+      <td>{{ employee.id }}</td>
+      <td>{{ employee.name }}</td>
+      <td>{{ employee.position }}</td>
+      <td>
+        <form method="POST" action="{{ url_for('modify_employee', id=employee.id) }}">
+          <input type="hidden" name="id" value="{{ employee.id }}" />
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" value="{{ employee.name }}" required />
+          <label for="position">Position:</label>
+          <input type="text" id="position" name="position" value="{{ employee.position }}" required />
+          <button type="submit">Modify</button>
+        </form>
+        <form method="POST" action="{{ url_for('delete_employee', id=employee.id) }}">
+          <button type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <h2>Add Employee</h2>
+  <form class="ajax-form" id="employee-form" action="/add_employee" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required />
+    <label for="position">Position:</label>
+    <input type="text" id="position" name="position" required />
+    <button type="submit">Add Employee</button>
+  </form>
+</body>
+</html>
